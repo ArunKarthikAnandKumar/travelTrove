@@ -1,0 +1,355 @@
+{
+  "continents": [
+    {
+      "name": "Asia",
+      "shortDesc": "Largest continent by area and population",
+      "longDesc": "Asia is known for its cultural diversity and historical richness.",
+      "thumbnail": "assets/uploads/continents/womenInBoat.avif"
+
+    }
+  ],
+  "countries": [
+    {
+      "continent": "Asia",
+      "name": "India",
+      "shortDesc": "A country in South Asia known for its diversity.",
+      "longDesc": "India is home to the Himalayas, deserts, and tropical regions.",
+      "thumbnail": "assets/uploads/country/tiger.avif"
+
+    }
+  ],
+  "states": [
+    {
+      "continent": "Asia",
+      "country": "India",
+      "name": "Tamil Nadu",
+      "shortDesc": "Southern state known for temples and culture.",
+      "longDesc": "Tamil Nadu is famous for Chennai, Madurai, and ancient Dravidian architecture.",
+      "thumbnail": "assets/uploads/state/dancer.avif",
+      "popularFor": "Temples and classical arts"
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "name": "Karnataka",
+      "shortDesc": "Known for its palaces, coffee estates, and rich heritage.",
+      "longDesc": "Karnataka offers a blend of modern cities like Bengaluru and heritage cities like Mysuru.",
+      "thumbnail": "karnataka.jpg",
+      "popularFor": "Palaces and coffee plantations"
+    }
+  ],
+  "cities": [
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Tamil Nadu",
+      "name": "Chennai",
+      "shortDesc": "Capital city of Tamil Nadu",
+      "longDesc": "Chennai is a coastal city famous for Marina Beach and classical dance.",
+     "thumbnail": "assets/uploads/city/mahabalipuram.avif",
+      "highlights": ["Marina Beach", "Kapaleeshwarar Temple"],
+      "tips": ["Best visited in winter months"],
+      "bestTimeToVisit": { "months": ["November", "February"], "reason": "Pleasant weather" },
+      "adventureActivities": ["Surfing", "Beach Walks"]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Karnataka",
+      "name": "Mysuru",
+      "shortDesc": "Cultural capital of Karnataka",
+      "longDesc": "Mysuru is famous for its royal heritage, palaces, and the grand Dasara festival.",
+      "thumbnail": "mysuru.jpg",
+      "highlights": ["Mysore Palace", "Chamundi Hills"],
+      "tips": ["Visit during Dasara for cultural events"],
+      "bestTimeToVisit": { "months": ["October", "February"], "reason": "Pleasant climate and festive season" },
+      "adventureActivities": ["Trekking", "Cultural Walks"]
+    }
+  ],
+  "attractions": [
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "name": "Marina Beach",
+      "shortDesc": "Second longest urban beach in the world",
+      "longDesc": "A beautiful natural urban beach along the Bay of Bengal.",
+      "thumbnail": "marina.jpg",
+      "highlights": ["Sunrise view", "Street food"],
+      "tips": ["Avoid afternoons in summer"],
+      "bestTimeToVisit": "November to February",
+      "entryFee": "Free",
+      "openingHours": "Always open",
+      "popularFor": ["Beach walks", "Photography"]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Mysuru",
+      "name": "Mysore Palace",
+      "shortDesc": "One of the grandest royal palaces in India",
+      "longDesc": "An iconic Indo-Saracenic palace that glows with thousands of lights every Sunday evening.",
+      "thumbnail": "mysore_palace.jpg",
+      "highlights": ["Light illumination", "Royal architecture"],
+      "tips": ["Best viewed at night"],
+      "bestTimeToVisit": "October to February",
+      "entryFee": "₹70 for adults",
+      "openingHours": "10 AM – 5:30 PM",
+      "popularFor": ["History", "Photography", "Architecture"]
+    }
+  ],
+  "hotels": [
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "name": "Leela Palace",
+      "shortDesc": "Luxury 5-star hotel",
+      "longDesc": "Elegant hotel with sea views, restaurants, and spa.",
+      "thumbnail": "assets/uploads/hotels/waterfall.avif",
+      "rating": 5,
+      "priceRange": "₹10,000–₹25,000 per night",
+      "roomTypes": ["Deluxe Room", "Suite"],
+      "amenities": ["Wi-Fi", "Pool", "Gym"],
+      "facilities": ["Spa", "Restaurant", "Parking"],
+      "popularFor": ["Luxury Stay", "Romantic Getaway"],
+      "checkInTime": "2:00 PM",
+      "checkOutTime": "12:00 PM",
+      "contactNumber": "+91 44 1234 5678",
+      "email": "info@leelapalace.com",
+      "website": "https://theleela.com",
+      "location": {
+        "latitude": 13.0022,
+        "longitude": 80.2707,
+        "address": "MRC Nagar, Chennai",
+        "nearbyAttractions": ["Marina Beach"]
+      },
+      "highlights": ["Luxury spa", "Sea view rooms"],
+      "tips": ["Book in advance during peak season"],
+      "bestTimeToVisit": {
+        "months": ["November", "February"],
+        "reason": "Cool weather"
+      }
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Mysuru",
+      "name": "Radisson Blu Plaza",
+      "shortDesc": "Premium hotel overlooking Mysore Race Club",
+      "longDesc": "Elegant 5-star hotel offering luxury rooms, dining, and spa services.",
+      "thumbnail": "radisson_mysuru.jpg",
+      "rating": 5,
+      "priceRange": "₹8,000–₹20,000 per night",
+      "roomTypes": ["Superior Room", "Executive Suite"],
+      "amenities": ["Wi-Fi", "Pool", "Spa"],
+      "facilities": ["Restaurant", "Bar", "Gym"],
+      "popularFor": ["Luxury Stay", "City Views"],
+      "checkInTime": "2:00 PM",
+      "checkOutTime": "12:00 PM",
+      "contactNumber": "+91 821 1234 567",
+      "email": "info@radissonmysuru.com",
+      "website": "https://www.radissonhotels.com",
+      "location": {
+        "latitude": 12.2958,
+        "longitude": 76.6394,
+        "address": "Nilgiri Road, Mysuru",
+        "nearbyAttractions": ["Mysore Palace"]
+      },
+      "highlights": ["City view rooms", "Luxury dining"],
+      "tips": ["Book spa in advance"],
+      "bestTimeToVisit": {
+        "months": ["October", "February"],
+        "reason": "Cool and festive season"
+      }
+    }
+  ],
+  "restaurants": [
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "name": "Murugan Idli Shop",
+      "shortDesc": "Authentic South Indian cuisine",
+      "longDesc": "Famous for soft idlis and traditional chutneys.",
+      "thumbnail": "assets/uploads/restaurants/beach.avif",
+      "cuisineType": ["South Indian"],
+      "averageCost": "₹500 for two",
+      "openingHours": "7 AM – 11 PM",
+      "contactNumber": "+91 44 8765 4321",
+      "facilities": ["Wi-Fi", "Parking"],
+      "popularFor": ["Family Dining", "Authentic Taste"]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Mysuru",
+      "name": "RRR Restaurant",
+      "shortDesc": "Iconic Andhra and South Indian meals",
+      "longDesc": "Famous for spicy biryanis and authentic South Indian thalis.",
+      "thumbnail": "rrr.jpg",
+      "cuisineType": ["South Indian", "Andhra"],
+      "averageCost": "₹600 for two",
+      "openingHours": "11 AM – 11 PM",
+      "contactNumber": "+91 821 9876 543",
+      "facilities": ["Air Conditioning", "Parking"],
+      "popularFor": ["Traditional Meals", "Quick Service"]
+    }
+  ],
+  "destinationGuides": [
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "title": "Explore Chennai - The Gateway to South India",
+      "overview": "A complete guide to Chennai's attractions, food, and stay.",
+      "thumbnail": "chennai_guide.jpg",
+      "highlights": ["Cultural heritage", "Beaches", "Temples"],
+      "travelTips": ["Carry sunscreen", "Try local filter coffee"],
+      "bestTimeToVisit": { "months": ["November", "February"], "reason": "Pleasant weather" },
+      "reviews": [
+        { "rating": 5, "comment": "Perfect for first-time visitors!" },
+        { "rating": 4, "comment": "Detailed and accurate guide." }
+      ]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Mysuru",
+      "title": "Discover Mysuru - The Royal Heritage City",
+      "overview": "Guide to Mysore’s palaces, cuisine, and cultural charm.",
+      "thumbnail": "mysuru_guide.jpg",
+      "highlights": ["Royal heritage", "Festivals", "Cuisine"],
+      "travelTips": ["Book tickets for the Palace light show early", "Try Mysore Pak"],
+      "bestTimeToVisit": { "months": ["October", "February"], "reason": "Festive atmosphere" },
+      "reviews": [
+        { "rating": 5, "comment": "Loved the palace and the guide was spot on!" },
+        { "rating": 4, "comment": "Perfect itinerary suggestions." }
+      ]
+    }
+  ],
+  "itineraries": [
+    {
+      "type": "Customizable",
+      "title": "2-Day Chennai Cultural Trip",
+      "durationDays": 2,
+      "thumbnail": "chennai_itinerary.jpg",
+      "continent": "Asia",
+      "country": "India",
+      "state": "Tamil Nadu",
+      "city": "Chennai",
+      "days": [
+        {
+          "dayNumber": 1,
+          "title": "Beach & City Tour",
+          "description": "Start with Marina Beach and end with traditional dinner.",
+          "attractions": [
+            {
+              "attractionName": "Marina Beach",
+              "startTime": "06:00 AM",
+              "endTime": "08:00 AM",
+              "notes": "Best sunrise view."
+            }
+          ],
+          "meals": {
+            "breakfast": { "restaurantName": "Murugan Idli Shop", "time": "08:30 AM" },
+            "lunch": { "restaurantName": "Murugan Idli Shop", "time": "01:00 PM" },
+            "dinner": { "restaurantName": "Murugan Idli Shop", "time": "08:00 PM" }
+          },
+          "hotelStay": {
+            "hotelName": "Leela Palace",
+            "checkIn": "02:00 PM",
+            "checkOut": "11:00 AM"
+          }
+        },
+        {
+          "dayNumber": 2,
+          "title": "Shopping and Relaxation",
+          "description": "Explore city markets and relax at the hotel.",
+          "attractions": [],
+          "meals": {
+            "breakfast": { "restaurantName": "Murugan Idli Shop", "time": "08:30 AM" }
+          },
+          "hotelStay": {
+            "hotelName": "Leela Palace",
+            "checkIn": "02:00 PM",
+            "checkOut": "12:00 PM"
+          }
+        }
+      ],
+      "inclusions": ["Breakfast", "Accommodation", "Local transport"],
+      "exclusions": ["Flights", "Personal expenses"],
+      "priceRange": "₹15,000–₹25,000",
+      "bestTimeToVisit": ["November", "February"],
+      "tags": ["Culture", "Family", "Relaxation"],
+      "reviews": [
+        { "rating": 5, "comment": "Well planned and customizable!" }
+      ]
+    },
+    {
+      "type": "Fixed",
+      "title": "2-Day Mysuru Royal Experience",
+      "durationDays": 2,
+      "thumbnail": "mysuru_itinerary.jpg",
+      "continent": "Asia",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Mysuru",
+      "days": [
+        {
+          "dayNumber": 1,
+          "title": "Royal Heritage Tour",
+          "description": "Explore the grandeur of Mysore Palace and relax by evening.",
+          "attractions": [
+            {
+              "attractionName": "Mysore Palace",
+              "startTime": "10:00 AM",
+              "endTime": "12:00 PM",
+              "notes": "Witness royal interiors."
+            }
+          ],
+          "meals": {
+            "breakfast": { "restaurantName": "RRR Restaurant", "time": "09:00 AM" },
+            "lunch": { "restaurantName": "RRR Restaurant", "time": "01:30 PM" },
+            "dinner": { "restaurantName": "RRR Restaurant", "time": "08:00 PM" }
+          },
+          "hotelStay": {
+            "hotelName": "Radisson Blu Plaza",
+            "checkIn": "02:00 PM",
+            "checkOut": "12:00 PM"
+          }
+        },
+        {
+          "dayNumber": 2,
+          "title": "Chamundi Hills & Shopping",
+          "description": "Visit Chamundi Hills and shop for Mysore silk.",
+          "attractions": [],
+          "meals": {
+            "breakfast": { "restaurantName": "RRR Restaurant", "time": "09:00 AM" }
+          },
+          "hotelStay": {
+            "hotelName": "Radisson Blu Plaza",
+            "checkIn": "02:00 PM",
+            "checkOut": "12:00 PM"
+          }
+        }
+      ],
+      "inclusions": ["Breakfast", "Hotel stay", "Local sightseeing"],
+      "exclusions": ["Flights", "Personal expenses"],
+      "priceRange": "₹12,000–₹22,000",
+      "bestTimeToVisit": ["October", "February"],
+      "tags": ["Royal Heritage", "Culture", "Relaxation"],
+      "reviews": [
+        { "rating": 5, "comment": "A royal and memorable experience!" }
+      ]
+    }
+  ]
+}
