@@ -49,7 +49,10 @@ app.use('/assets/uploads/restaurants',express.static(path.join(__dirname,'/asset
 app.use('/assets/uploads/hotels',express.static(path.join(__dirname,'/assets/uploads/hotels')))
 app.use('/assets/uploads/destinationGuides',express.static(path.join(__dirname,'/assets/uploads/destinationGuides')))
 
-app.use('/api/auth',isAuthenticated,authRouter)
+// app.use('/api/auth',isAuthenticated,authRouter)
+app.get('/',(req,res,next)=>{
+  res.status(200).json({message:"Api Hit"})
+})
 app.use('/api/admin',adminRouter)
 app.use('/api',Router)
 

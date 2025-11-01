@@ -1,88 +1,96 @@
-const express=require('express')
-const router=express.Router()
-const adminServices=require('../service/admin')
-const stateService=require('../service/state')
-const stateModel=require('../model/State')
+const express = require("express");
+const router = express.Router();
 
-const multer=require('multer')
+const userServices = require("../service/users");
+const adminServices = require("../service/admin");
+const databaseSeeder = require("../seed/seedDatabase");
 
+// ✅ Test Route
+router.get("/", (req, res, next) => {
+  try {
+    res.status(200).send({ message: "This is a normal route" });
+  } catch (error) {
+    next(error);
+  }
+});
 
+// ✅ Database Setup Route
+router.get("/setUpDb", async (req, res, next) => {
+  try {
+    const data = await databaseSeeder;
+    res.status(200).send({ message: "Database seeded successfully", data });
+  } catch (error) {
+    next(error);
+  }
+});
 
-const storage=multer.diskStorage({
-    destination:(req,file,cb)=>{
-        cb(null,'assets/uploads/state')
-    },
-    filename:(req,file,cb)=>{
-        const uniqueName=`${Date.now()}-${file.originalname}`
-        cb(null,uniqueName)
-    }
-})
+// ✅ Fetch All Users
+router.get("/fetchAllUsers", async (req, res, next) => {
+  try {
+    const data = await userServices.fetchAllUsers();
+    res.status(200).send({ error: false, message: "All user data", data });
+  } catch (error) {
+    next(error);
+  }
+});
 
-const upload=multer({
-    storage,
-    limits:{fieldSize:5*1024*1024},
-    
-})
+// ✅ Register User
+router.post("/register", async (req, res, next) => {
+  console.log(req.body);
+  try {
+    const data = await userServices.registerUser(req.body);
+    res.status(200).send({
+      error: false,
+      message: "User created successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
+// ✅ User Login
+router.post("/login", async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const data = await userServices.loginUser(email, password);
+    res.status(200).send({
+      error: false,
+      message: "User logged in successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
+// ✅ Make Admin
+router.post("/admin/makeAdmin", async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const data = await adminServices.makeAdmin(email);
+    res.status(200).send({
+      message: "Successfully made SuperAdmin",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
+// ✅ Admin Login
+router.post("/admin/login", async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const data = await adminServices.loginAdmin(email, password);
+    res.status(200).send({
+      error: false,
+      message: "Admin logged in successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
-
-
-router.post('/addState',upload.single('thumbnail'),async(req,res,next)=>{
-    console.log(req.body)
-         const {name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor}=req.body
-       const thumbnailPath=req.file?`assets/uploads/state/${req.file.filename}`:null
-       const updatedData={name,shortDesc,longDesc,thumbnail:thumbnailPath,continent,continentId,country,countryId,popularFor}
-       console.log(updatedData)
-       let stateObj=stateModel.createStateObj(updatedData)
-       console.log(stateObj)
-    try{
-          let data=await stateService.createState(stateObj)
-          res.status(200).send({error:false,message:"state added Succesfully",data:data})
-        
-    }catch(error){
-        next(error)
-    }
-})
-
-router.delete('/deleteState/:id',async(req,res,next)=>{
-    let id=req.params.id
-    console.log(id)
-    try{
-          let data=await stateService.deleteState(id)
-          res.status(200).send({error:false,message:"state deleted Succesfully",data:data})
-        
-    }catch(error){
-        next(error)
-    }
-})
-
-router.post('/updateState/:id',upload.single('thumbnail'),async(req,res,next)=>{
-    let id=req.params.id
-    let reqData=req.body
-    console.log('32',id,reqData)
-         const {name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor}=req.body
-       const thumbnailPath=req.file?`assets/uploads/state/${req.file.filename}`:`assets/uploads/state/${req.body.thumbnail}`
-       const updatedData={name,shortDesc,longDesc,thumbnail:thumbnailPath,continent,continentId,country,countryId,popularFor}
-       console.log('1212',updatedData)
-    try{
-          let data=await stateService.updateState(id,updatedData)
-          res.status(200).send({error:false,message:"state Updated Succesfully",data:data})
-        
-    }catch(error){
-        next(error)
-    }
-})
-
-router.get('/allStates',async(req,res,next)=>{
-    try{
-          let data=await stateService.fetchAllStates()
-          res.status(200).send({error:false,message:"state Fetched Succesfully",data:{stateData:data.stateData,continentData:data.continentData,countryData:data.countryData}})
-        
-    }catch(error){
-        next(error)
-    }
-})
-
-module.exports=router
+module.exports = router;
