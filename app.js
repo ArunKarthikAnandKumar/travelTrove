@@ -48,6 +48,8 @@ app.use('/assets/uploads/attractions',express.static(path.join(__dirname,'/asset
 app.use('/assets/uploads/restaurants',express.static(path.join(__dirname,'/assets/uploads/restaurants')))
 app.use('/assets/uploads/hotels',express.static(path.join(__dirname,'/assets/uploads/hotels')))
 app.use('/assets/uploads/destinationGuides',express.static(path.join(__dirname,'/assets/uploads/destinationGuides')))
+app.use('/assets/uploads/itineraries',express.static(path.join(__dirname,'/assets/uploads/itineraries')))
+app.use('/assets/uploads/travel-groups',express.static(path.join(__dirname,'/assets/uploads/travel-groups')))
 
 // app.use('/api/auth',isAuthenticated,authRouter)
 app.get('/',(req,res,next)=>{

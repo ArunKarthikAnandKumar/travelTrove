@@ -12,6 +12,8 @@ const restaurantRouter=require('./restaurantRoutes')
 const hotelRouter=require('./hotelRoutes')
 const destinationGuideRouter=require('./destinationGuideRoutes')
 const itenaryRouter=require('./itenaryRoutes')
+const travelGroupRouter=require('./travelGroupRoutes')
+const destinationGuideService=require('../service/destinationGuide')
 
 
 router.get('/',(req,res,next)=>{
@@ -29,9 +31,33 @@ router.use('/',cityRouter)
 router.use('/',attractionRouter)
 router.use('/',restaurantRouter)
 router.use('/',hotelRouter)
-router.use('/',destinationGuideRouter)
-router.use('/',itenaryRouter)
+router.use('/destinationGuides', destinationGuideRouter)
 
+// Direct route for /api/admin/allDestinationGuides (frontend compatibility)
+router.get('/allDestinationGuides', async (req, res, next) => {
+  try {
+    const data = await destinationGuideService.fetchAllDestinationGuides();
+    res.status(200).send({
+      error: false,
+      message: "Destination guides fetched successfully",
+      data: {
+        destinationData: data.destinationData,
+        continentData: data.continentData,
+        countryData: data.countryData,
+        stateData: data.stateData,
+        cityData: data.cityData,
+        attractionData: data.attractionData,
+        hotelData: data.hotelData,
+        restaurantData: data.restaurantData,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.use('/',itenaryRouter)
+router.use('/',travelGroupRouter)
 
 
 module.exports=router

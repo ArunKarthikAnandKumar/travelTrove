@@ -3,6 +3,8 @@ const router = express.Router();
 const multer = require("multer");
 const parser = require("../utilites/parser");
 const destinationGuideService = require("../service/destinationGuide");
+const DestinationGuide = require("../model/DestinationGuide");
+const { isAuthenticated } = require("../utilites/authMiddleware");
 
 // ✅ Multer setup
 const storage = multer.diskStorage({
@@ -26,6 +28,8 @@ router.post("/addDestinationGuide", upload.single("thumbnail"), async (req, res,
     const {
       title,
       overview,
+      history,
+      culture,
       continent,
       continentId,
       country,
@@ -50,6 +54,8 @@ router.post("/addDestinationGuide", upload.single("thumbnail"), async (req, res,
     const destinationObj = {
       title,
       overview,
+      history,
+      culture,
       continent,
       continentId,
       country,
@@ -90,6 +96,8 @@ router.post("/updateDestinationGuide/:id", upload.single("thumbnail"), async (re
     const {
       title,
       overview,
+      history,
+      culture,
       continent,
       continentId,
       country,
@@ -117,6 +125,8 @@ router.post("/updateDestinationGuide/:id", upload.single("thumbnail"), async (re
     const updatedData = {
       title,
       overview,
+      history,
+      culture,
       continent,
       continentId,
       country,
@@ -181,6 +191,257 @@ router.get("/allDestinationGuides", async (req, res, next) => {
       },
     });
   } catch (error) {
+    next(error);
+  }
+});
+
+// Search Destination Guides with filters
+router.get("/search", async (req, res, next) => {
+  try {
+    const { search, continent, country, state, city, limit = 10, page = 1 } = req.query;
+    
+    // Build the query object
+    const query = { status: "Active" };
+    
+    // Add location filters
+    if (continent) query.continent = new RegExp(continent, 'i');
+    if (country) query.country = new RegExp(country, 'i');
+    if (state) query.state = new RegExp(state, 'i');
+    if (city) query.city = new RegExp(city, 'i');
+    
+    // Add general text search (searches across title, overview, location fields)
+    if (search && search.trim()) {
+      const searchRegex = new RegExp(search.trim(), 'i');
+      query.$or = [
+        { title: searchRegex },
+        { overview: searchRegex },
+        { continent: searchRegex },
+        { country: searchRegex },
+        { state: searchRegex },
+        { city: searchRegex }
+      ];
+    }
+    
+    // Calculate skip value for pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    
+    // Execute the query with pagination
+    const guides = await DestinationGuide
+      .find(query)
+      .select('title overview thumbnail continent country state city avgRating highlights')
+      .limit(parseInt(limit))
+      .skip(skip)
+      .sort({ avgRating: -1, createdAt: -1 })
+      .lean();
+    
+    // Get total count for pagination
+    const total = await DestinationGuide.countDocuments(query);
+    
+    // Format the response - ensure all fields have default values
+    const response = {
+      success: true,
+      message: total > 0 ? 'Destination guides found successfully' : 'No destinations found',
+      data: guides
+        .filter(guide => guide && guide._id) // Filter out any invalid guides
+        .map(guide => ({
+        id: guide._id.toString(),
+        title: guide.title || 'Untitled Destination',
+        overview: guide.overview || '',
+        thumbnail: guide.thumbnail || null,
+        continent: guide.continent || '',
+        country: guide.country || '',
+        state: guide.state || '',
+        city: guide.city || '',
+        avgRating: guide.avgRating || 0,
+        highlights: Array.isArray(guide.highlights) ? guide.highlights : []
+      })),
+      pagination: {
+        total,
+        page: parseInt(page),
+        limit: parseInt(limit),
+        pages: Math.ceil(total / parseInt(limit))
+      }
+    };
+    
+    res.status(200).json(response);
+  } catch (error) {
+    console.error('Error searching destination guides:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while searching for destination guides',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+// Get detailed destination guide by ID (with all populated data)
+router.get("/getDestinationGuide/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const DestinationGuide = require("../model/DestinationGuide");
+    const Attraction = require("../model/Attraction");
+    const Hotel = require("../model/Hotel");
+    const Restaurant = require("../model/Restaurant");
+    
+    const model = await DestinationGuide.createDestinationGuideModel();
+    const attractionModel = await Attraction.createAttractionModel();
+    const hotelModel = await Hotel.createHotelModel();
+    const restaurantModel = await Restaurant.createRestaurantModel();
+    
+    const guide = await model.findById(id).lean();
+    
+    if (!guide) {
+      return res.status(404).json({
+        error: true,
+        message: 'Destination guide not found'
+      });
+    }
+    
+    // Check if guide is available
+    if (guide.status !== 'Active') {
+      return res.status(200).json({
+        error: false,
+        message: 'Destination guide is no longer available',
+        data: {
+          id: guide._id,
+          title: guide.title,
+          status: guide.status
+        }
+      });
+    }
+    
+    // Fetch full details of linked attractions
+    let attractionDetails = [];
+    if (guide.attractions && guide.attractions.length > 0) {
+      attractionDetails = await attractionModel
+        .find({ _id: { $in: guide.attractions } })
+        .select('name description image location rating category')
+        .lean();
+    }
+    
+    // Fetch full details of linked hotels
+    let hotelDetails = [];
+    if (guide.hotels && guide.hotels.length > 0) {
+      hotelDetails = await hotelModel
+        .find({ _id: { $in: guide.hotels } })
+        .select('name description image address rating priceRange amenities')
+        .lean();
+    }
+    
+    // Fetch full details of linked restaurants
+    let restaurantDetails = [];
+    if (guide.restaurants && guide.restaurants.length > 0) {
+      restaurantDetails = await restaurantModel
+        .find({ _id: { $in: guide.restaurants } })
+        .select('name description image address cuisineType rating priceRange')
+        .lean();
+    }
+    
+    // Format response
+    const formattedGuide = {
+      id: guide._id,
+      title: guide.title,
+      overview: guide.overview,
+      thumbnail: guide.thumbnail,
+      history: guide.history || 'No history information available',
+      culture: guide.culture || 'No culture information available',
+      continent: guide.continent,
+      country: guide.country,
+      state: guide.state,
+      city: guide.city,
+      highlights: guide.highlights || [],
+      travelTips: guide.travelTips || [],
+      bestTimeToVisit: guide.bestTimeToVisit || {},
+      avgRating: guide.avgRating || 0,
+      reviews: guide.reviews || [],
+      attractions: attractionDetails,
+      hotels: hotelDetails,
+      restaurants: restaurantDetails,
+      isFeatured: guide.isFeatured,
+      status: guide.status,
+      createdAt: guide.createdAt,
+      updatedAt: guide.updatedAt
+    };
+    
+    res.status(200).json({
+      error: false,
+      message: 'Destination guide fetched successfully',
+      data: formattedGuide
+    });
+  } catch (error) {
+    console.error('Error fetching destination guide:', error);
+    next(error);
+  }
+});
+
+// Add review to destination guide (Protected - Authenticated users only)
+router.post("/addReview/:id", isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { rating, comment } = req.body;
+    
+    // Validate userId exists
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        error: true,
+        message: 'User authentication required'
+      });
+    }
+    
+    const userId = String(req.user.id);
+    
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({
+        error: true,
+        message: 'Rating must be between 1 and 5'
+      });
+    }
+    
+    const model = await DestinationGuide.createDestinationGuideModel();
+    const guide = await model.findById(id);
+    
+    if (!guide) {
+      return res.status(404).json({
+        error: true,
+        message: 'Destination guide not found'
+      });
+    }
+    
+    // Check if user already reviewed
+    const existingReview = guide.reviews.find(r => {
+      if (!r.userId) return false;
+      // Handle both ObjectId and string userIds
+      const reviewUserId = r.userId.toString ? r.userId.toString() : String(r.userId);
+      return reviewUserId === userId;
+    });
+    if (existingReview) {
+      return res.status(400).json({
+        error: true,
+        message: 'You have already reviewed this destination'
+      });
+    }
+    
+    // Add review
+    guide.reviews.push({
+      userId,
+      rating: parseInt(rating),
+      comment: comment || '',
+      createdAt: new Date()
+    });
+    
+    // Calculate new average rating
+    const totalRatings = guide.reviews.reduce((sum, review) => sum + review.rating, 0);
+    guide.avgRating = (totalRatings / guide.reviews.length).toFixed(2);
+    
+    await guide.save();
+    
+    res.status(200).json({
+      error: false,
+      message: 'Review added successfully',
+      data: guide
+    });
+  } catch (error) {
+    console.error('Error adding review:', error);
     next(error);
   }
 });

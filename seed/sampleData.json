@@ -5,7 +5,6 @@
       "shortDesc": "Largest continent by area and population",
       "longDesc": "Asia is known for its cultural diversity and historical richness.",
       "thumbnail": "assets/uploads/continents/womenInBoat.avif"
-
     }
   ],
   "countries": [
@@ -15,7 +14,6 @@
       "shortDesc": "A country in South Asia known for its diversity.",
       "longDesc": "India is home to the Himalayas, deserts, and tropical regions.",
       "thumbnail": "assets/uploads/country/tiger.avif"
-
     }
   ],
   "states": [
@@ -34,8 +32,17 @@
       "name": "Karnataka",
       "shortDesc": "Known for its palaces, coffee estates, and rich heritage.",
       "longDesc": "Karnataka offers a blend of modern cities like Bengaluru and heritage cities like Mysuru.",
-      "thumbnail": "karnataka.jpg",
+      "thumbnail": "assets/uploads/state/dancer.avif",
       "popularFor": "Palaces and coffee plantations"
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "name": "Kerala",
+      "shortDesc": "God's Own Country with serene backwaters.",
+      "longDesc": "Kerala is famous for its backwaters, hill stations, and Ayurvedic treatments.",
+      "thumbnail": "assets/uploads/state/dancer.avif",
+      "popularFor": "Backwaters, Ayurveda, and nature"
     }
   ],
   "cities": [
@@ -46,7 +53,7 @@
       "name": "Chennai",
       "shortDesc": "Capital city of Tamil Nadu",
       "longDesc": "Chennai is a coastal city famous for Marina Beach and classical dance.",
-     "thumbnail": "assets/uploads/city/mahabalipuram.avif",
+      "thumbnail": "assets/uploads/city/mahabalipuram.avif",
       "highlights": ["Marina Beach", "Kapaleeshwarar Temple"],
       "tips": ["Best visited in winter months"],
       "bestTimeToVisit": { "months": ["November", "February"], "reason": "Pleasant weather" },
@@ -59,11 +66,24 @@
       "name": "Mysuru",
       "shortDesc": "Cultural capital of Karnataka",
       "longDesc": "Mysuru is famous for its royal heritage, palaces, and the grand Dasara festival.",
-      "thumbnail": "mysuru.jpg",
+      "thumbnail": "assets/uploads/city/mahabalipuram.avif",
       "highlights": ["Mysore Palace", "Chamundi Hills"],
       "tips": ["Visit during Dasara for cultural events"],
       "bestTimeToVisit": { "months": ["October", "February"], "reason": "Pleasant climate and festive season" },
       "adventureActivities": ["Trekking", "Cultural Walks"]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Kerala",
+      "name": "Kochi",
+      "shortDesc": "Commercial capital of Kerala",
+      "longDesc": "Kochi is a port city blending Portuguese, Dutch, and British colonial heritage with traditional Kerala culture.",
+      "thumbnail": "assets/uploads/city/mahabalipuram.avif",
+      "highlights": ["Chinese Fishing Nets", "Fort Kochi", "Jewish Synagogue"],
+      "tips": ["Visit during the Kochi Biennale art festival"],
+      "bestTimeToVisit": { "months": ["October", "March"], "reason": "Cool and dry weather" },
+      "adventureActivities": ["Boating", "Culinary Tours"]
     }
   ],
   "attractions": [
@@ -75,7 +95,7 @@
       "name": "Marina Beach",
       "shortDesc": "Second longest urban beach in the world",
       "longDesc": "A beautiful natural urban beach along the Bay of Bengal.",
-      "thumbnail": "marina.jpg",
+      "thumbnail": "assets/uploads/attractions/marina_beach.jpg",
       "highlights": ["Sunrise view", "Street food"],
       "tips": ["Avoid afternoons in summer"],
       "bestTimeToVisit": "November to February",
@@ -91,13 +111,29 @@
       "name": "Mysore Palace",
       "shortDesc": "One of the grandest royal palaces in India",
       "longDesc": "An iconic Indo-Saracenic palace that glows with thousands of lights every Sunday evening.",
-      "thumbnail": "mysore_palace.jpg",
+      "thumbnail": "assets/uploads/attractions/mysore_palace.jpg",
       "highlights": ["Light illumination", "Royal architecture"],
       "tips": ["Best viewed at night"],
       "bestTimeToVisit": "October to February",
       "entryFee": "₹70 for adults",
       "openingHours": "10 AM – 5:30 PM",
       "popularFor": ["History", "Photography", "Architecture"]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Kerala",
+      "city": "Kochi",
+      "name": "Chinese Fishing Nets",
+      "shortDesc": "Iconic heritage fishing nets of Kochi",
+      "longDesc": "Ancient Chinese fishing nets that have become a symbol of Fort Kochi's maritime heritage.",
+      "thumbnail": "assets/uploads/attractions/chinese_nets.jpg",
+      "highlights": ["Sunset view", "Traditional fishing"],
+      "tips": ["Best viewed during sunset"],
+      "bestTimeToVisit": "October to March",
+      "entryFee": "Free viewing, tip for demonstration",
+      "openingHours": "6 AM – 7 PM",
+      "popularFor": ["Photography", "Heritage", "Sunset"]
     }
   ],
   "hotels": [
@@ -142,7 +178,7 @@
       "name": "Radisson Blu Plaza",
       "shortDesc": "Premium hotel overlooking Mysore Race Club",
       "longDesc": "Elegant 5-star hotel offering luxury rooms, dining, and spa services.",
-      "thumbnail": "radisson_mysuru.jpg",
+      "thumbnail": "assets/uploads/hotels/waterfall.avif",
       "rating": 5,
       "priceRange": "₹8,000–₹20,000 per night",
       "roomTypes": ["Superior Room", "Executive Suite"],
@@ -165,6 +201,39 @@
       "bestTimeToVisit": {
         "months": ["October", "February"],
         "reason": "Cool and festive season"
+      }
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Kerala",
+      "city": "Kochi",
+      "name": "Grande Bolgatty Palace",
+      "shortDesc": "Heritage island resort",
+      "longDesc": "A beautiful heritage resort on Bolgatty Island offering traditional Kerala hospitality.",
+      "thumbnail": "assets/uploads/hotels/waterfall.avif",
+      "rating": 4,
+      "priceRange": "₹12,000–₹35,000 per night",
+      "roomTypes": ["Sea View Room", "Heritage Suite"],
+      "amenities": ["Wi-Fi", "Pool", "Ayurvedic Spa"],
+      "facilities": ["Restaurant", "Backwater Tours", "Parking"],
+      "popularFor": ["Heritage Stay", "Backwater Tours"],
+      "checkInTime": "2:00 PM",
+      "checkOutTime": "11:00 AM",
+      "contactNumber": "+91 484 1234 567",
+      "email": "info@bolgattypalace.com",
+      "website": "https://grandebolgatty.com",
+      "location": {
+        "latitude": 9.9619,
+        "longitude": 76.2658,
+        "address": "Bolgatty Island, Kochi",
+        "nearbyAttractions": ["Chinese Fishing Nets", "Fort Kochi"]
+      },
+      "highlights": ["Backwater views", "Heritage architecture"],
+      "tips": ["Book backwater tours in advance"],
+      "bestTimeToVisit": {
+        "months": ["October", "March"],
+        "reason": "Best weather"
       }
     }
   ],
@@ -193,13 +262,29 @@
       "name": "RRR Restaurant",
       "shortDesc": "Iconic Andhra and South Indian meals",
       "longDesc": "Famous for spicy biryanis and authentic South Indian thalis.",
-      "thumbnail": "rrr.jpg",
+      "thumbnail": "assets/uploads/restaurants/beach.avif",
       "cuisineType": ["South Indian", "Andhra"],
       "averageCost": "₹600 for two",
       "openingHours": "11 AM – 11 PM",
       "contactNumber": "+91 821 9876 543",
       "facilities": ["Air Conditioning", "Parking"],
       "popularFor": ["Traditional Meals", "Quick Service"]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Kerala",
+      "city": "Kochi",
+      "name": "Kashi Art Cafe",
+      "shortDesc": "Artistic cafe with continental and local cuisine",
+      "longDesc": "A famous cafe in Fort Kochi known for its artistic ambiance and fusion food.",
+      "thumbnail": "assets/uploads/restaurants/beach.avif",
+      "cuisineType": ["Continental", "Kerala", "Fusion"],
+      "averageCost": "₹1,200 for two",
+      "openingHours": "8 AM – 10 PM",
+      "contactNumber": "+91 484 2225 769",
+      "facilities": ["Wi-Fi", "Art Gallery", "Parking"],
+      "popularFor": ["Art Lovers", "Breakfast", "Coffee"]
     }
   ],
   "destinationGuides": [
@@ -210,7 +295,7 @@
       "city": "Chennai",
       "title": "Explore Chennai - The Gateway to South India",
       "overview": "A complete guide to Chennai's attractions, food, and stay.",
-      "thumbnail": "chennai_guide.jpg",
+      "thumbnail": "assets/uploads/destinationGuides/chennai_guide.jpg",
       "highlights": ["Cultural heritage", "Beaches", "Temples"],
       "travelTips": ["Carry sunscreen", "Try local filter coffee"],
       "bestTimeToVisit": { "months": ["November", "February"], "reason": "Pleasant weather" },
@@ -225,14 +310,30 @@
       "state": "Karnataka",
       "city": "Mysuru",
       "title": "Discover Mysuru - The Royal Heritage City",
-      "overview": "Guide to Mysore’s palaces, cuisine, and cultural charm.",
-      "thumbnail": "mysuru_guide.jpg",
+      "overview": "Guide to Mysore's palaces, cuisine, and cultural charm.",
+      "thumbnail": "assets/uploads/destinationGuides/mysuru_guide.jpg",
       "highlights": ["Royal heritage", "Festivals", "Cuisine"],
       "travelTips": ["Book tickets for the Palace light show early", "Try Mysore Pak"],
       "bestTimeToVisit": { "months": ["October", "February"], "reason": "Festive atmosphere" },
       "reviews": [
         { "rating": 5, "comment": "Loved the palace and the guide was spot on!" },
         { "rating": 4, "comment": "Perfect itinerary suggestions." }
+      ]
+    },
+    {
+      "continent": "Asia",
+      "country": "India",
+      "state": "Kerala",
+      "city": "Kochi",
+      "title": "Kochi - Where History Meets Contemporary Art",
+      "overview": "Explore Kochi's colonial past, art scene, and delicious Kerala cuisine.",
+      "thumbnail": "assets/uploads/destinationGuides/kochi_guide.jpg",
+      "highlights": ["Colonial heritage", "Art scene", "Seafood"],
+      "travelTips": ["Visit during Kochi-Muziris Biennale", "Try toddy and seafood"],
+      "bestTimeToVisit": { "months": ["October", "March"], "reason": "Art festivals and pleasant weather" },
+      "reviews": [
+        { "rating": 5, "comment": "Amazing blend of history and art!" },
+        { "rating": 5, "comment": "Best seafood I've ever had." }
       ]
     }
   ],
@@ -241,7 +342,7 @@
       "type": "Customizable",
       "title": "2-Day Chennai Cultural Trip",
       "durationDays": 2,
-      "thumbnail": "chennai_itinerary.jpg",
+      "thumbnail": "assets/uploads/itineraries/chennai_itinerary.jpg",
       "continent": "Asia",
       "country": "India",
       "state": "Tamil Nadu",
@@ -298,7 +399,7 @@
       "type": "Fixed",
       "title": "2-Day Mysuru Royal Experience",
       "durationDays": 2,
-      "thumbnail": "mysuru_itinerary.jpg",
+      "thumbnail": "assets/uploads/itineraries/mysuru_itinerary.jpg",
       "continent": "Asia",
       "country": "India",
       "state": "Karnataka",
@@ -349,6 +450,79 @@
       "tags": ["Royal Heritage", "Culture", "Relaxation"],
       "reviews": [
         { "rating": 5, "comment": "A royal and memorable experience!" }
+      ]
+    },
+    {
+      "type": "Customizable",
+      "title": "3-Day Kochi Heritage & Backwaters",
+      "durationDays": 3,
+      "thumbnail": "assets/uploads/itineraries/kochi_itinerary.jpg",
+      "continent": "Asia",
+      "country": "India",
+      "state": "Kerala",
+      "city": "Kochi",
+      "days": [
+        {
+          "dayNumber": 1,
+          "title": "Fort Kochi Exploration",
+          "description": "Discover colonial heritage sites and art galleries.",
+          "attractions": [
+            {
+              "attractionName": "Chinese Fishing Nets",
+              "startTime": "05:00 PM",
+              "endTime": "07:00 PM",
+              "notes": "Sunset view is spectacular."
+            }
+          ],
+          "meals": {
+            "breakfast": { "restaurantName": "Kashi Art Cafe", "time": "09:00 AM" },
+            "lunch": { "restaurantName": "Kashi Art Cafe", "time": "01:00 PM" },
+            "dinner": { "restaurantName": "Kashi Art Cafe", "time": "08:00 PM" }
+          },
+          "hotelStay": {
+            "hotelName": "Grande Bolgatty Palace",
+            "checkIn": "02:00 PM",
+            "checkOut": "11:00 AM"
+          }
+        },
+        {
+          "dayNumber": 2,
+          "title": "Backwater Cruise",
+          "description": "Enjoy a full day backwater cruise and traditional lunch.",
+          "attractions": [],
+          "meals": {
+            "breakfast": { "restaurantName": "Kashi Art Cafe", "time": "08:00 AM" },
+            "lunch": { "restaurantName": "Kashi Art Cafe", "time": "01:00 PM" },
+            "dinner": { "restaurantName": "Kashi Art Cafe", "time": "08:00 PM" }
+          },
+          "hotelStay": {
+            "hotelName": "Grande Bolgatty Palace",
+            "checkIn": "02:00 PM",
+            "checkOut": "11:00 AM"
+          }
+        },
+        {
+          "dayNumber": 3,
+          "title": "Shopping & Departure",
+          "description": "Buy spices and traditional items, then depart.",
+          "attractions": [],
+          "meals": {
+            "breakfast": { "restaurantName": "Kashi Art Cafe", "time": "08:00 AM" }
+          },
+          "hotelStay": {
+            "hotelName": "Grande Bolgatty Palace",
+            "checkIn": "02:00 PM",
+            "checkOut": "11:00 AM"
+          }
+        }
+      ],
+      "inclusions": ["Breakfast", "Hotel stay", "Backwater cruise"],
+      "exclusions": ["Flights", "Personal expenses", "Dinner"],
+      "priceRange": "₹18,000–₹35,000",
+      "bestTimeToVisit": ["October", "March"],
+      "tags": ["Heritage", "Backwaters", "Art", "Relaxation"],
+      "reviews": [
+        { "rating": 5, "comment": "Perfect blend of culture and nature!" }
       ]
     }
   ]

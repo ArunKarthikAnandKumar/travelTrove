@@ -89,7 +89,73 @@ userServices.fetchAllUsers=async()=>{
     
 }
 
+// ✅ Update User Profile
+userServices.updateUserProfile = async (userId, userData) => {
+    let model = await userModel.createUserModel();
+    let user = await model.findById(userId);
+    
+    if (!user) {
+        let err = new Error("User not found");
+        err.status = 404;
+        throw err;
+    }
+    
+    // Check if email is being updated and if it already exists
+    if (userData.email && userData.email !== user.email) {
+        const emailExists = await model.findOne({ email: userData.email });
+        if (emailExists) {
+            let err = new Error("Email already exists");
+            err.status = 400;
+            throw err;
+        }
+    }
+    
+    // Update allowed fields
+    const allowedFields = ['userName', 'email', 'phoneNumber', 'country'];
+    allowedFields.forEach(field => {
+        if (userData[field] !== undefined) {
+            user[field] = userData[field];
+        }
+    });
+    
+    // If password is provided, hash it
+    if (userData.password) {
+        user.password = await Auth.encryptPassword(userData.password);
+    }
+    
+    await user.save();
+    
+    // Return updated user data (without password)
+    return {
+        id: user.id,
+        userName: user.userName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        country: user.country,
+        role: user.role
+    };
+}
 
-
+// ✅ Get User Profile
+userServices.getUserProfile = async (userId) => {
+    let model = await userModel.createUserModel();
+    let user = await model.findById(userId);
+    
+    if (!user) {
+        let err = new Error("User not found");
+        err.status = 404;
+        throw err;
+    }
+    
+    return {
+        id: user.id,
+        userName: user.userName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        country: user.country,
+        role: user.role,
+        isActive: user.isActive
+    };
+}
 
 module.exports=userServices

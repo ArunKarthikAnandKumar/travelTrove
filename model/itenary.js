@@ -75,6 +75,7 @@ const itinerarySchema = Schema(
     ],
 
     avgRating: { type: Number, default: 0 },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "tbl_users" },
   },
   {
     collection: "tbl_itineraries",
@@ -107,6 +108,7 @@ class Itinerary {
     this.tags = obj.tags;
     this.reviews = obj.reviews;
     this.avgRating = obj.avgRating;
+    this.createdBy = obj.createdBy;
   }
 }
 

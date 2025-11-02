@@ -60,6 +60,11 @@ const userSchema=Schema(
             enum:[0,1],
             default:1
         },
+        // Favorites for destinations and itineraries
+        favorites: {
+            destinationGuides: [{ type: mongoose.Schema.Types.ObjectId, ref: "tbl_destination_guides" }],
+            itineraries: [{ type: mongoose.Schema.Types.ObjectId, ref: "tbl_itineraries" }]
+        }
 
     },{
         Collection:"tbl_users",
@@ -77,7 +82,7 @@ class User{
         this.phoneNumber=obj.phoneNumber;
         this.country=obj.country
         this.role=obj.role;
-        
+        this.favorites=obj.favorites || { destinationGuides: [], itineraries: [] };
     }
 }
 

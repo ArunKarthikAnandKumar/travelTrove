@@ -15,6 +15,10 @@ const destinationGuideSchema = Schema({
   overview: { type: String },
   thumbnail: { type: String },
 
+  // History and culture
+  history: { type: String },
+  culture: { type: String },
+
   // Linked sections
   attractions: [{ type: mongoose.Schema.Types.ObjectId, ref: "tbl_attractions" }],
   hotels: [{ type: mongoose.Schema.Types.ObjectId, ref: "tbl_hotels" }],
@@ -66,6 +70,8 @@ class DestinationGuide {
     this.title = obj.title;
     this.overview = obj.overview;
     this.thumbnail = obj.thumbnail;
+    this.history = obj.history;
+    this.culture = obj.culture;
     this.attractions = obj.attractions;
     this.hotels = obj.hotels;
     this.restaurants = obj.restaurants;

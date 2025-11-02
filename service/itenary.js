@@ -165,7 +165,7 @@ itineraryServices.fetchAllItineraries = async () => {
         avgRating: 1,
         createdAt: 1,
         updatedAt: 1,
-        _id: 0,
+        _id: 1,
       },
     },
   ]);
@@ -322,6 +322,20 @@ itineraryServices.fetchAllItineraries = async () => {
       restaurantData,
     };
   }
+};
+
+// FETCH SINGLE ITINERARY BY ID
+itineraryServices.fetchItineraryById = async (id) => {
+  const itineraryModelInstance = await itineraryModel.createItineraryModel();
+  const itinerary = await itineraryModelInstance.findById(id).lean();
+  
+  if (!itinerary) {
+    const err = new Error("Itinerary not found");
+    err.status = 404;
+    throw err;
+  }
+  
+  return itinerary;
 };
 
 module.exports = itineraryServices;

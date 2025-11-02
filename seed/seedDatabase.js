@@ -110,20 +110,37 @@ const itenaryModel = await Itenary.createItineraryModel();
     const restaurantMap = Object.fromEntries(restaurants.map(r => [r.name, r._id]));
 
     await destinationModel.insertMany(
-      data.destinationGuides.map(d => ({
-        ...d,
-        continentId: continentMap[d.continent],
-        countryId: countryMap[d.country],
-        stateId: stateMap[d.state],
-        cityId: cityMap[d.city],
-        attractions: [attractionMap["Marina Beach"]],
-        hotels: [hotelMap["Leela Palace"]],
-        restaurants: [restaurantMap["Murugan Idli Shop"]],
-        avgRating:
-          d.reviews && d.reviews.length
-            ? d.reviews.reduce((a, b) => a + b.rating, 0) / d.reviews.length
-            : 0
-      }))
+      data.destinationGuides.map(d => {
+        // Get all attractions in this city
+        const cityAttractions = attractions
+          .filter(a => a.city === d.city)
+          .map(a => a._id);
+        
+        // Get all hotels in this city
+        const cityHotels = hotels
+          .filter(h => h.city === d.city)
+          .map(h => h._id);
+        
+        // Get all restaurants in this city
+        const cityRestaurants = restaurants
+          .filter(r => r.city === d.city)
+          .map(r => r._id);
+        
+        return {
+          ...d,
+          continentId: continentMap[d.continent],
+          countryId: countryMap[d.country],
+          stateId: stateMap[d.state],
+          cityId: cityMap[d.city],
+          attractions: cityAttractions.length > 0 ? cityAttractions : [],
+          hotels: cityHotels.length > 0 ? cityHotels : [],
+          restaurants: cityRestaurants.length > 0 ? cityRestaurants : [],
+          avgRating:
+            d.reviews && d.reviews.length
+              ? d.reviews.reduce((a, b) => a + b.rating, 0) / d.reviews.length
+              : 0
+        };
+      })
     );
 
     await itenaryModel.insertMany(
