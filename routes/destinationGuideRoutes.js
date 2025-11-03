@@ -339,7 +339,7 @@ router.get("/getDestinationGuide/:id", async (req, res, next) => {
     if (guide.attractions && guide.attractions.length > 0) {
       attractionDetails = await attractionModel
         .find({ _id: { $in: guide.attractions } })
-        .select('name description image location rating category')
+        .select('name shortDesc longDesc thumbnail highlights tips bestTimeToVisit entryFee openingHours popularFor location rating category city state country continent')
         .lean();
     }
     
@@ -348,7 +348,7 @@ router.get("/getDestinationGuide/:id", async (req, res, next) => {
     if (guide.hotels && guide.hotels.length > 0) {
       hotelDetails = await hotelModel
         .find({ _id: { $in: guide.hotels } })
-        .select('name description image address rating priceRange amenities')
+        .select('name shortDesc longDesc thumbnail rating priceRange roomTypes amenities facilities popularFor checkInTime checkOutTime contactNumber email website location highlights tips bestTimeToVisit city state country continent')
         .lean();
     }
     
@@ -357,7 +357,7 @@ router.get("/getDestinationGuide/:id", async (req, res, next) => {
     if (guide.restaurants && guide.restaurants.length > 0) {
       restaurantDetails = await restaurantModel
         .find({ _id: { $in: guide.restaurants } })
-        .select('name description image address cuisineType rating priceRange')
+        .select('name shortDesc longDesc thumbnail cuisineType averageCost openingHours contactNumber facilities popularFor city state country continent')
         .lean();
     }
     

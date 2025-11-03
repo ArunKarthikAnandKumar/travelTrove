@@ -362,11 +362,14 @@ router.post("/:groupId/invite", isAuthenticated, async (req, res, next) => {
       });
     }
     
-    // Check if user is admin of the group
-    if (group.groupAdmin.toString() !== inviterId) {
+    // Check if user is admin of the group or super admin
+    const isGroupAdmin = group.groupAdmin.toString() === inviterId;
+    const isSuperAdmin = req.user.role === 'admin';
+    
+    if (!isGroupAdmin && !isSuperAdmin) {
       return res.status(403).json({
         success: false,
-        message: 'Only group admin can invite users'
+        message: 'Only group admin or system admin can invite users'
       });
     }
     
