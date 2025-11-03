@@ -24,7 +24,7 @@ const upload = multer({
 });
 
 // Create a new travel group
-router.post("/addTravelGroup", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/addTravelGroup", async (req, res, next) => {
   try {
     const {
       itineraryId,
@@ -42,6 +42,7 @@ router.post("/addTravelGroup", upload.single("thumbnail"), async (req, res, next
       exclusions,
       groupAdmin,
       isPrivate,
+      thumbnail,
     } = req.body;
 
     const travelGroupObj = {
@@ -60,7 +61,7 @@ router.post("/addTravelGroup", upload.single("thumbnail"), async (req, res, next
       exclusions: parser.parseArray(exclusions),
       groupAdmin,
       isPrivate: isPrivate === 'true' || isPrivate === true,
-      thumbnail: req.file ? `assets/uploads/travel-groups/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
     };
     console.log(travelGroupObj);
 
@@ -76,7 +77,7 @@ router.post("/addTravelGroup", upload.single("thumbnail"), async (req, res, next
 });
 
 // Update a travel group
-router.post("/updateTravelGroup/:id", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/updateTravelGroup/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     console.log(req.body)
@@ -95,9 +96,12 @@ router.post("/updateTravelGroup/:id", upload.single("thumbnail"), async (req, re
     if (updateData.inclusions) updateData.inclusions = parser.parseArray(updateData.inclusions);
     if (updateData.exclusions) updateData.exclusions = parser.parseArray(updateData.exclusions);
     
-    // Handle file upload if exists
-    if (req.file) {
-      updateData.thumbnail = `assets/uploads/travel-groups/${req.file.filename}`;
+    // Only update thumbnail if provided (base64 string)
+    if (updateData.thumbnail && updateData.thumbnail.startsWith("data:image")) {
+      // Keep the base64 thumbnail as is
+    } else if (updateData.thumbnail) {
+      // If it's not base64, remove it to keep existing thumbnail
+      delete updateData.thumbnail;
     }
     
     const updatedGroup = await travelGroupService.updateTravelGroup(id, updateData);
@@ -223,7 +227,7 @@ router.patch("/:groupId/status", async (req, res, next) => {
 });
 
 // Create travel group by registered user
-router.post("/user/createTravelGroup", isAuthenticated, upload.single("thumbnail"), async (req, res, next) => {
+router.post("/user/createTravelGroup", isAuthenticated, async (req, res, next) => {
   try {
     const {
       itineraryId,
@@ -240,6 +244,7 @@ router.post("/user/createTravelGroup", isAuthenticated, upload.single("thumbnail
       inclusions,
       exclusions,
       isPrivate,
+      thumbnail,
     } = req.body;
 
     const travelGroupObj = {
@@ -258,7 +263,7 @@ router.post("/user/createTravelGroup", isAuthenticated, upload.single("thumbnail
       exclusions: parser.parseArray(exclusions),
       groupAdmin: req.user.id,
       isPrivate: isPrivate === 'true' || isPrivate === true,
-      thumbnail: req.file ? `assets/uploads/travel-groups/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
     };
 
     const data = await travelGroupService.createTravelGroup(travelGroupObj);

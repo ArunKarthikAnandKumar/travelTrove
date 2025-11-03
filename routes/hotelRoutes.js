@@ -22,8 +22,9 @@ const upload = multer({
   limits: { fieldSize: 5 * 1024 * 1024 },
 });
 
-router.post("/addHotel", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/addHotel", async (req, res, next) => {
   try {
+    console.log(req.body);
     const {
       name,
       continent,
@@ -51,8 +52,10 @@ router.post("/addHotel", upload.single("thumbnail"), async (req, res, next) => {
       tips,
       bestTimeToVisit,
       location,
+      thumbnail,
     } = req.body;
 
+    // thumbnail is base64 string, store it directly in DB
     const hotelObj = {
       name,
       continent,
@@ -80,7 +83,7 @@ router.post("/addHotel", upload.single("thumbnail"), async (req, res, next) => {
       tips: parser.parseArray(tips),
       bestTimeToVisit: parser.parseArray(bestTimeToVisit)[0],
       location: parser.parseObject(location),
-      thumbnail: req.file ? `assets/uploads/hotels/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
     };
 
     const data = await hotelService.createHotel(hotelObj);
@@ -94,9 +97,11 @@ router.post("/addHotel", upload.single("thumbnail"), async (req, res, next) => {
   }
 });
 
-router.post("/updateHotel/:id", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/updateHotel/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
+    let reqData = req.body;
+    console.log('Hotel update', id, reqData);
     const {
       name,
       continent,
@@ -124,12 +129,11 @@ router.post("/updateHotel/:id", upload.single("thumbnail"), async (req, res, nex
       tips,
       bestTimeToVisit,
       location,
+      thumbnail,
     } = req.body;
 
-    const thumbnailPath = req.file
-      ? `assets/uploads/hotels/${req.file.filename}`
-      : req.body.thumbnail;
-
+    // thumbnail is base64 string, store it directly in DB
+    // If thumbnail is provided, use it; otherwise keep existing
     const updatedData = {
       name,
       continent,
@@ -157,8 +161,13 @@ router.post("/updateHotel/:id", upload.single("thumbnail"), async (req, res, nex
       tips: parser.parseArray(tips),
       bestTimeToVisit: parser.parseArray(bestTimeToVisit)[0],
       location: parser.parseObject(location),
-      thumbnail: thumbnailPath,
     };
+    
+    if(thumbnail){
+      updatedData.thumbnail = thumbnail;
+    }
+    
+    console.log('Hotel updatedData', updatedData);
 
     const data = await hotelService.updateHotel(id, updatedData);
     res.status(200).send({

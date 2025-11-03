@@ -29,12 +29,11 @@ const upload=multer({
 
 
 
-router.post('/addContinent',upload.single('thumbnail'),async(req,res,next)=>{
+router.post('/addContinent',async(req,res,next)=>{
     console.log(req.body)
-    console.log('wqwq',req.file)
-       const {name,shortDesc,longDesc}=req.body
-       const thumbnailPath=req.file?`assets/uploads/continents/${req.file.filename}`:null
-       const data={name,shortDesc,longDesc,thumbnail:thumbnailPath}
+       const {name,shortDesc,longDesc,thumbnail}=req.body
+       // thumbnail is base64 string, store it directly in DB
+       const data={name,shortDesc,longDesc,thumbnail:thumbnail||null}
        console.log(data)
        let continentObj=continentModel.createContinentObj(data)
     try{
@@ -58,14 +57,18 @@ router.delete('/deleteContinent/:id',async(req,res,next)=>{
     }
 })
 
-router.post('/updateContinent/:id',upload.single('thumbnail'),async(req,res,next)=>{
+router.post('/updateContinent/:id',async(req,res,next)=>{
     let id=req.params.id
     let reqData=req.body
     console.log('32',id,reqData)
-           const {name,shortDesc,longDesc}=req.body
-       const thumbnailPath=req.file?`assets/uploads/continents/${req.file.filename}`:`assets/uploads/continents/${req.body.thumbnail}`
-       const updatedData={name,shortDesc,longDesc,thumbnail:thumbnailPath}
-       console.log('1212',updatedData)
+    const {name,shortDesc,longDesc,thumbnail}=req.body
+    // thumbnail is base64 string, store it directly in DB
+    // If thumbnail is provided, use it; otherwise keep existing
+    const updatedData={name,shortDesc,longDesc}
+    if(thumbnail){
+        updatedData.thumbnail=thumbnail
+    }
+    console.log('1212',updatedData)
     try{
           let data=await continentService.updateContinent(id,updatedData)
           res.status(200).send({error:false,message:"continent Updated Succesfully",data:data})

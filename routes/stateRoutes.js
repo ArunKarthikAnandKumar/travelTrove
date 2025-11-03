@@ -29,11 +29,11 @@ const upload=multer({
 
 
 
-router.post('/addState',upload.single('thumbnail'),async(req,res,next)=>{
+router.post('/addState',async(req,res,next)=>{
     console.log(req.body)
-         const {name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor}=req.body
-       const thumbnailPath=req.file?`assets/uploads/state/${req.file.filename}`:null
-       const updatedData={name,shortDesc,longDesc,thumbnail:thumbnailPath,continent,continentId,country,countryId,popularFor}
+         const {name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor,thumbnail}=req.body
+       // thumbnail is base64 string, store it directly in DB
+       const updatedData={name,shortDesc,longDesc,thumbnail:thumbnail||null,continent,continentId,country,countryId,popularFor}
        console.log(updatedData)
        let stateObj=stateModel.createStateObj(updatedData)
        console.log(stateObj)
@@ -58,14 +58,18 @@ router.delete('/deleteState/:id',async(req,res,next)=>{
     }
 })
 
-router.post('/updateState/:id',upload.single('thumbnail'),async(req,res,next)=>{
+router.post('/updateState/:id',async(req,res,next)=>{
     let id=req.params.id
     let reqData=req.body
     console.log('32',id,reqData)
-         const {name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor}=req.body
-       const thumbnailPath=req.file?`assets/uploads/state/${req.file.filename}`:`assets/uploads/state/${req.body.thumbnail}`
-       const updatedData={name,shortDesc,longDesc,thumbnail:thumbnailPath,continent,continentId,country,countryId,popularFor}
-       console.log('1212',updatedData)
+    const {name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor,thumbnail}=req.body
+    // thumbnail is base64 string, store it directly in DB
+    // If thumbnail is provided, use it; otherwise keep existing
+    const updatedData={name,shortDesc,longDesc,continent,continentId,country,countryId,popularFor}
+    if(thumbnail){
+        updatedData.thumbnail=thumbnail
+    }
+    console.log('1212',updatedData)
     try{
           let data=await stateService.updateState(id,updatedData)
           res.status(200).send({error:false,message:"state Updated Succesfully",data:data})

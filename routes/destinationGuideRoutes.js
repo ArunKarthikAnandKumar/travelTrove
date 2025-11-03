@@ -6,6 +6,28 @@ const destinationGuideService = require("../service/destinationGuide");
 const DestinationGuide = require("../model/DestinationGuide");
 const { isAuthenticated } = require("../utilites/authMiddleware");
 
+// Helper function to extract ObjectIds from array (handles both strings and objects)
+const normalizeObjectIdArray = (value) => {
+  const parsed = parser.parseArray(value);
+  if (!Array.isArray(parsed)) return [];
+  
+  return parsed.map(item => {
+    // If it's an object with 'id' property, extract the id
+    if (typeof item === 'object' && item !== null && item.id) {
+      return item.id;
+    }
+    // If it's already a string/ObjectId, return as is
+    if (typeof item === 'string') {
+      return item;
+    }
+    // If it's an ObjectId, convert to string
+    if (item && item.toString) {
+      return item.toString();
+    }
+    return item;
+  }).filter(Boolean); // Remove any null/undefined/empty values
+};
+
 // ✅ Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -23,7 +45,7 @@ const upload = multer({
 });
 
 // ✅ Add Destination Guide
-router.post("/addDestinationGuide", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/addDestinationGuide", async (req, res, next) => {
   try {
     const {
       title,
@@ -49,6 +71,7 @@ router.post("/addDestinationGuide", upload.single("thumbnail"), async (req, res,
       status,
       createdBy,
       updatedBy,
+      thumbnail,
     } = req.body;
 
     const destinationObj = {
@@ -67,15 +90,15 @@ router.post("/addDestinationGuide", upload.single("thumbnail"), async (req, res,
       highlights: parser.parseArray(highlights),
       travelTips: parser.parseArray(travelTips),
       bestTimeToVisit: parser.parseObject(bestTimeToVisit), // ✅ FIXED (object not array)
-      attractions: parser.parseArray(attractions),
-      hotels: parser.parseArray(hotels),
-      restaurants: parser.parseArray(restaurants),
+      attractions: normalizeObjectIdArray(attractions),
+      hotels: normalizeObjectIdArray(hotels),
+      restaurants: normalizeObjectIdArray(restaurants),
       avgRating: avgRating ? Number(avgRating) : 0,
       isFeatured: isFeatured === "true" || isFeatured === true,
       status: status || "Active",
       createdBy,
       updatedBy,
-      thumbnail: req.file ? `assets/uploads/destinationGuides/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
     };
 
     const data = await destinationGuideService.createDestinationGuide(destinationObj);
@@ -90,7 +113,7 @@ router.post("/addDestinationGuide", upload.single("thumbnail"), async (req, res,
 });
 
 // ✅ Update Destination Guide
-router.post("/updateDestinationGuide/:id", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/updateDestinationGuide/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const {
@@ -116,11 +139,8 @@ router.post("/updateDestinationGuide/:id", upload.single("thumbnail"), async (re
       isFeatured,
       status,
       updatedBy,
+      thumbnail,
     } = req.body;
-
-    const thumbnailPath = req.file
-      ? `assets/uploads/destinationGuides/${req.file.filename}`
-      : req.body.thumbnail;
 
     const updatedData = {
       title,
@@ -138,15 +158,19 @@ router.post("/updateDestinationGuide/:id", upload.single("thumbnail"), async (re
       highlights: parser.parseArray(highlights),
       travelTips: parser.parseArray(travelTips),
       bestTimeToVisit: parser.parseObject(bestTimeToVisit), // ✅ FIXED
-      attractions: parser.parseArray(attractions),
-      hotels: parser.parseArray(hotels),
-      restaurants: parser.parseArray(restaurants),
+      attractions: normalizeObjectIdArray(attractions),
+      hotels: normalizeObjectIdArray(hotels),
+      restaurants: normalizeObjectIdArray(restaurants),
       avgRating: avgRating ? Number(avgRating) : 0,
       isFeatured: isFeatured === "true" || isFeatured === true,
       status: status || "Active",
       updatedBy,
-      thumbnail: thumbnailPath,
     };
+
+    // Only update thumbnail if provided
+    if (thumbnail) {
+      updatedData.thumbnail = thumbnail;
+    }
 
     const data = await destinationGuideService.updateDestinationGuide(id, updatedData);
     res.status(200).send({

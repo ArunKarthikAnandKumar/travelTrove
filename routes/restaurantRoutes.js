@@ -21,8 +21,9 @@ const upload = multer({
   limits: { fieldSize: 5 * 1024 * 1024 },
 });
 
-router.post("/addRestaurant", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/addRestaurant", async (req, res, next) => {
   try {
+    console.log(req.body);
     const {
       name,
       continent,
@@ -41,8 +42,10 @@ router.post("/addRestaurant", upload.single("thumbnail"), async (req, res, next)
       contactNumber,
       facilities,
       popularFor,
+      thumbnail,
     } = req.body;
 
+    // thumbnail is base64 string, store it directly in DB
     const restaurantObj = {
       name,
       continent,
@@ -61,7 +64,7 @@ router.post("/addRestaurant", upload.single("thumbnail"), async (req, res, next)
       contactNumber,
       facilities: parser.parseArray(facilities),
       popularFor: parser.parseArray(popularFor),
-      thumbnail: req.file ? `assets/uploads/restaurants/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
     };
 
     const data = await restaurantService.createRestaurant(restaurantObj);
@@ -71,9 +74,11 @@ router.post("/addRestaurant", upload.single("thumbnail"), async (req, res, next)
   }
 });
 
-router.post("/updateRestaurant/:id", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/updateRestaurant/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
+    let reqData = req.body;
+    console.log('Restaurant update', id, reqData);
     const {
       name,
       continent,
@@ -92,12 +97,11 @@ router.post("/updateRestaurant/:id", upload.single("thumbnail"), async (req, res
       contactNumber,
       facilities,
       popularFor,
+      thumbnail,
     } = req.body;
 
-    const thumbnailPath = req.file
-      ? `assets/uploads/restaurants/${req.file.filename}`
-      : req.body.thumbnail;
-
+    // thumbnail is base64 string, store it directly in DB
+    // If thumbnail is provided, use it; otherwise keep existing
     const updatedData = {
       name,
       continent,
@@ -116,8 +120,13 @@ router.post("/updateRestaurant/:id", upload.single("thumbnail"), async (req, res
       contactNumber,
       facilities: parser.parseArray(facilities),
       popularFor: parser.parseArray(popularFor),
-      thumbnail: thumbnailPath,
     };
+    
+    if(thumbnail){
+      updatedData.thumbnail = thumbnail;
+    }
+    
+    console.log('Restaurant updatedData', updatedData);
 
     const data = await restaurantService.updateRestaurant(id, updatedData);
     res.status(200).send({ error: false, message: "Restaurant updated successfully", data });

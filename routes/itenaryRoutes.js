@@ -25,7 +25,7 @@ const upload = multer({
 });
 
 // ✅ Create Itinerary (accepts fields aligned with itinerary model)
-router.post("/addItenary", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/addItenary", async (req, res, next) => {
   try {
     const {
       type,
@@ -45,6 +45,7 @@ router.post("/addItenary", upload.single("thumbnail"), async (req, res, next) =>
       priceRange,
       bestTimeToVisit,
       tags,
+      thumbnail,
     } = req.body;
 
     const itenaryObj = {
@@ -65,7 +66,7 @@ router.post("/addItenary", upload.single("thumbnail"), async (req, res, next) =>
       priceRange,
       bestTimeToVisit: parser.parseArray(bestTimeToVisit),
       tags: parser.parseArray(tags),
-      thumbnail: req.file ? `assets/uploads/itineraries/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
     };
 
     const data = await itenaryService.createItinerary(itenaryObj);
@@ -80,7 +81,7 @@ router.post("/addItenary", upload.single("thumbnail"), async (req, res, next) =>
 });
 
 // ✅ Update Itinerary (accepts fields aligned with itinerary model)
-router.post("/updateItenary/:id", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/updateItenary/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const {
@@ -101,11 +102,8 @@ router.post("/updateItenary/:id", upload.single("thumbnail"), async (req, res, n
       priceRange,
       bestTimeToVisit,
       tags,
+      thumbnail,
     } = req.body;
-
-    const thumbnailPath = req.file
-      ? `assets/uploads/itineraries/${req.file.filename}`
-      : req.body.thumbnail;
 
     const updatedData = {
       type,
@@ -125,8 +123,12 @@ router.post("/updateItenary/:id", upload.single("thumbnail"), async (req, res, n
       priceRange,
       bestTimeToVisit: parser.parseArray(bestTimeToVisit),
       tags: parser.parseArray(tags),
-      thumbnail: thumbnailPath,
     };
+
+    // Only update thumbnail if provided
+    if (thumbnail) {
+      updatedData.thumbnail = thumbnail;
+    }
 
     const data = await itenaryService.updateItinerary(id, updatedData);
     res.status(200).send({

@@ -22,7 +22,7 @@ const upload=multer({
     limits:{fieldSize:5*1024*1024},
 })
 
-router.post("/addCity", upload.single("thumbnail"), async (req, res, next) => {
+router.post("/addCity", async (req, res, next) => {
   try {
     console.log(req.body);
 
@@ -44,9 +44,13 @@ router.post("/addCity", upload.single("thumbnail"), async (req, res, next) => {
       nearbyHotels,
       nearbyRestaurants,
       adventureActivities,
+      thumbnail,
+      shortDescImage,
+      longDescImage,
+      historyImage,
     } = req.body;
     
-
+    // thumbnail is base64 string, store it directly in DB
     const cityObj ={
       name,
       shortDesc,
@@ -61,7 +65,10 @@ router.post("/addCity", upload.single("thumbnail"), async (req, res, next) => {
       history,
       nearbyHotels,
       nearbyRestaurants,
-      thumbnail: req.file ? `assets/uploads/city/${req.file.filename}` : null,
+      thumbnail: thumbnail || null,
+      shortDescImage: shortDescImage || null,
+      longDescImage: longDescImage || null,
+      historyImage: historyImage || null,
 
       highlights: parser.parseArray(highlights),
       tips: parser.parseArray(tips),
@@ -87,15 +94,17 @@ router.delete('/deleteCity/:id',async(req,res,next)=>{
     }
 })
 
-router.post('/updateCity/:id',upload.single('thumbnail'),async(req,res,next)=>{
+router.post('/updateCity/:id',async(req,res,next)=>{
     let id=req.params.id
-    const {name,shortDesc,longDesc,continent,continentId,country,countryId,state,stateId,popularFor,highlights,history,tips,bestTimeToVisit,nearbyHotels,nearbyRestaurants,adventureActivities}=req.body
-    const thumbnailPath=req.file?`assets/uploads/city/${req.file.filename}`:`assets/uploads/city/${req.body.thumbnail}`
+    let reqData=req.body
+    console.log('City update',id,reqData)
+    const {name,shortDesc,longDesc,continent,continentId,country,countryId,state,stateId,popularFor,highlights,history,tips,bestTimeToVisit,nearbyHotels,nearbyRestaurants,adventureActivities,thumbnail,shortDescImage,longDescImage,historyImage}=req.body
+    // thumbnail is base64 string, store it directly in DB
+    // If thumbnail is provided, use it; otherwise keep existing
     const updatedData={
         name,
         shortDesc,
         longDesc,
-        thumbnail:thumbnailPath,
         continent,
         continentId,
         country,
@@ -111,6 +120,19 @@ router.post('/updateCity/:id',upload.single('thumbnail'),async(req,res,next)=>{
         nearbyRestaurants,
         adventureActivities
     }
+    if(thumbnail){
+        updatedData.thumbnail=thumbnail
+    }
+    if(shortDescImage){
+        updatedData.shortDescImage=shortDescImage
+    }
+    if(longDescImage){
+        updatedData.longDescImage=longDescImage
+    }
+    if(historyImage){
+        updatedData.historyImage=historyImage
+    }
+    console.log('City updatedData',updatedData)
     try{
         let data=await cityService.updateCity(id,updatedData)
         res.status(200).send({error:false,message:"City updated successfully",data:data})
